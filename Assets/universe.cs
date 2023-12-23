@@ -66,7 +66,7 @@ public class universe : MonoBehaviour {
         var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         // transform === gameObject.transform
         obj.transform.parent = transform;
-        obj.name = name ?? $"Star-{transform.childCount}";
+        obj.name = name ?? $"Star-{transform.childCount-1}";
         obj.transform.localPosition = position;
         obj.GetComponent<Renderer>().material.SetColor("_Color", color);
         return obj;
