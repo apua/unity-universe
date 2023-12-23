@@ -14,6 +14,13 @@
 //
 // - Walk around and look around the space.
 // - Make the space more like a Universe.
+//
+// Other related:
+//
+// - `MonoBehaviour.InvokeRepeating`
+// - `Time.timeScale`
+// - `MonoBehaviour.Awake`
+// - `MonoBehaviour.OnValidate`
 
 using UnityEngine;
 
@@ -25,14 +32,12 @@ using UnityEngine;
 // Define the object behavior.
 public class universe : MonoBehaviour {
 
-    // Must declare propertiese before using them. Unlike Python.
-    Vector3Int rotationAxis = new Vector3Int(60, 80, 0);
-
-    // The public properties will be interactive in Unity object inspector.
-    // Name in camelCase to gracefully display on field name of Unity object inspector.
+    // * Must declare propertiese before using them. Unlike Python.
+    // * The public properties will be interactive in Unity object inspector.
+    // * Name in camelCase to gracefully display on field name of Unity object inspector.
+    public Vector3Int rotationAxis = new Vector3Int(60, 80, 0);
     public int degreesPerSecond = 36;
-    // NOTE: "property with setter" would not reflect to inspector.
-    // An alternative might be `MonoBehaviour.OnValidate`.
+    // NOTE: "property with setter" would not reflect to inspector; an alternative might be `MonoBehaviour.OnValidate`.
 
     // Constants won't be interactiv in Unity object inspector even if public.
     const int drawAreaWidth = 20;
@@ -52,7 +57,7 @@ public class universe : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        
+        transform.Rotate(axis: rotationAxis, angle: degreesPerSecond * Time.deltaTime);
     }
 
     /* ******************** */
