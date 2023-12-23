@@ -320,7 +320,7 @@ GameObject:
   - component: {fileID: 1517988059}
   - component: {fileID: 1517988058}
   m_Layer: 0
-  m_Name: universe
+  m_Name: Universe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -338,6 +338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87befbbf34f1441c19a640f9a1a062ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  degreesPerSecond: 35
 --- !u!4 &1517988059
 Transform:
   m_ObjectHideFlags: 0
