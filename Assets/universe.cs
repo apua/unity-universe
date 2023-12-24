@@ -27,47 +27,47 @@ using UnityEngine;
 
 // `nullable` is a Swift Optional type.
 // `#` is a "preprocessor directives".
-#nullable enable
+// ::
+//      #nullable enable
 
 // Define the object behavior.
 public class universe : MonoBehaviour {
 
     // * Must declare propertiese before using them. Unlike Python.
     // * The public properties will be interactive in Unity object inspector.
-    // * Name in camelCase to gracefully display on field name of Unity object inspector.
-    public Vector3Int rotationAxis = new Vector3Int(60, 80, 0);
-    public int degreesPerSecond = 36;
+    public GameObject Stars; // = default!;
+    public int DegreesPerSecond = 36;
+    public Vector3Int RotationAxis = new(60, 80, 0);
     // NOTE: "property with setter" would not reflect to inspector; an alternative might be `MonoBehaviour.OnValidate`.
 
-    // Constants won't be interactiv in Unity object inspector even if public.
-    const int drawAreaWidth = 20;
-    const double starsRadiusRatio = 0.9f;
-    const double shapeRadius = drawAreaWidth * 0.5 * starsRadiusRatio;
+    // * Constants won't be interactiv in Unity object inspector even if public.
+    const int DrawAreaWidth = 20;
+    const double StarsRadiusRatio = 0.9f;
+    const double ShapeRadius = DrawAreaWidth * 0.5 * StarsRadiusRatio;
 
     // Start is called before the first frame update
     void Start() {
-        CreateChildSphere(Vector3Int.zero, Color.yellow, name: "Center");
-        CreateChildSphere(new Vector3(+1, 0, 0), Color.black);
-        CreateChildSphere(new Vector3(-1, 0, 0), Color.clear);
-        CreateChildSphere(new Vector3(0, +1, 0), Color.magenta);
-        CreateChildSphere(new Vector3(0, -1, 0), Color.magenta);
-        CreateChildSphere(new Vector3(0, 0, +1), Color.cyan);
-        CreateChildSphere(new Vector3(0, 0, -1), Color.cyan);
+        CreateChildSphere(+1, 0, 0, Color.black);
+        CreateChildSphere(-1, 0, 0, Color.clear);
+        CreateChildSphere(0, +1, 0, Color.magenta);
+        CreateChildSphere(0, -1, 0, Color.magenta);
+        CreateChildSphere(0, 0, +1, Color.cyan);
+        CreateChildSphere(0, 0, -1, Color.cyan);
     }
 
     // Update is called once per frame
     void Update() {
-        transform.Rotate(axis: rotationAxis, angle: degreesPerSecond * Time.deltaTime);
+        Stars.transform.Rotate(axis: RotationAxis, angle: DegreesPerSecond * Time.deltaTime);
     }
 
     /* ******************** */
 
-    GameObject CreateChildSphere(Vector3 position, Color color, string? name = null) {
+    GameObject CreateChildSphere(int x, int y, int z, Color color) {
         var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         // transform === gameObject.transform
-        obj.transform.parent = transform;
-        obj.name = name ?? $"Star-{transform.childCount-1}";
-        obj.transform.localPosition = position;
+        obj.transform.parent = Stars.transform;
+        obj.name = $"Star-{Stars.transform.childCount}";
+        obj.transform.localPosition = new Vector3Int(x, y, z);
         obj.GetComponent<Renderer>().material.SetColor("_Color", color);
         return obj;
     }
