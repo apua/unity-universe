@@ -24,17 +24,12 @@
 
 using UnityEngine;
 
-
-// `nullable` is a Swift Optional type.
-// `#` is a "preprocessor directives".
-// ::
-//      #nullable enable
-
 // Define the object behavior.
-public class universe : MonoBehaviour {
+public class Universe : MonoBehaviour {
 
     // * Must declare propertiese before using them. Unlike Python.
     // * The public properties will be interactive in Unity object inspector.
+    public GameObject StarPrototype = default!;
     public GameObject Stars; // = default!;
     public int DegreesPerSecond = 36;
     public Vector3Int RotationAxis = new(60, 80, 0);
@@ -62,13 +57,13 @@ public class universe : MonoBehaviour {
 
     /* ******************** */
 
-    GameObject CreateChildSphere(int x, int y, int z, Color color) {
-        var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        // transform === gameObject.transform
+    void CreateChildSphere(int x, int y, int z, Color color) {
+        //var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        var obj = Instantiate(StarPrototype);
         obj.transform.parent = Stars.transform;
         obj.name = $"Star-{Stars.transform.childCount}";
         obj.transform.localPosition = new Vector3Int(x, y, z);
         obj.GetComponent<Renderer>().material.SetColor("_Color", color);
-        return obj;
+        obj.SetActive(true);
     }
 }
