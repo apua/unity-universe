@@ -1,0 +1,13 @@
+Label {
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+}
+
+Button {
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(255, 255, 255);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}

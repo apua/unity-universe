@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Control.uss?fileID=7433441132597879392&amp;guid=efabbd1868b2b4d229481b0268ac5372&amp;type=3#Control" />
+    <ui:VisualElement name="Container" style="justify-content: flex-end; align-items: flex-start; position: absolute; bottom: 0;">
+        <ui:Label tabindex="-1" text="Shape:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Shape" />
+        <ui:GroupBox name="ShapeOptions">
+            <ui:Button text="sphere" parse-escape-sequences="true" display-tooltip-when-elided="true" name="sphere" />
+            <ui:Button text="ring" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ring" />
+            <ui:Button text="2ring" parse-escape-sequences="true" display-tooltip-when-elided="true" name="2ring" />
+            <ui:Button text="cage" parse-escape-sequences="true" display-tooltip-when-elided="true" name="cage" />
+            <ui:Button text="2cube" parse-escape-sequences="true" display-tooltip-when-elided="true" name="2cube" />
+            <ui:Button text="2sphere" parse-escape-sequences="true" display-tooltip-when-elided="true" name="2sphere" />
+            <ui:Button text="tetrahedron" parse-escape-sequences="true" display-tooltip-when-elided="true" name="tetrahedron" />
+            <ui:Button text="escherian-knot" parse-escape-sequences="true" display-tooltip-when-elided="true" name="escherian-knot" />
+        </ui:GroupBox>
+        <ui:Label tabindex="-1" text="Amount: 42" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Amount" />
+        <ui:GroupBox name="ControlAmount" style="flex-direction: row;">
+            <ui:Button text="-" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Decrease" />
+            <ui:Button text="+" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Increase" />
+        </ui:GroupBox>
+    </ui:VisualElement>
+</ui:UXML>
