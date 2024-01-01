@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.030122528, g: 0.078686275, b: 0.16926035, a: 1}
+  m_IndirectSpecularColor: {r: 0.07575824, g: 0.11669008, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -152,8 +152,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87befbbf34f1441c19a640f9a1a062ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StarPrototype: {fileID: 1337292542}
-  Stars: {fileID: 897686487}
   DegreesPerSecond: 36
   RotationAxis: {x: 60, y: 80, z: 0}
 --- !u!4 &77179604
@@ -407,8 +405,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
