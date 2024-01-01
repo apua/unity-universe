@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87befbbf34f1441c19a640f9a1a062ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DegreesPerSecond: 36
+  DegreePerSecond: 36
   RotationAxis: {x: 60, y: 80, z: 0}
 --- !u!4 &77179604
 Transform:
@@ -183,6 +183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 644085287}
   - component: {fileID: 644085288}
+  - component: {fileID: 644085289}
   m_Layer: 0
   m_Name: Control
   m_TagString: Untagged
@@ -221,6 +222,18 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: a58061d1df85646849db0faf845e0f0e, type: 3}
   m_SortingOrder: 0
+--- !u!114 &644085289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 644085286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cfe55f9ec8864e9d821b18b83cf19ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

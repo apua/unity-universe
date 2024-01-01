@@ -28,7 +28,7 @@ public class Universe : MonoBehaviour {
 
     /* ******************** */
 
-    void AddStar() {
+    public void AddStar() {
         // New.
         var obj = Instantiate(_prototype);
         // Set parent to `Stars`.
@@ -42,6 +42,13 @@ public class Universe : MonoBehaviour {
         //obj.transform.localPosition = PointGenerators.Sphere();
         // Enable.
         obj.SetActive(true);
+    }
+
+    public void DelStar() {
+        if (_stars.transform.childCount > 0) {
+            var index = _stars.transform.childCount - 1;
+            Destroy(_stars.transform.GetChild(index).gameObject);
+        }
     }
 
     void UpdateCurrentColor() {

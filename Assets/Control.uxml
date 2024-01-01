@@ -14,8 +14,8 @@
         </ui:GroupBox>
         <ui:Label tabindex="-1" text="Amount: 42" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Amount" />
         <ui:GroupBox name="ControlAmount" style="flex-direction: row;">
-            <ui:Button text="-" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Decrease" />
-            <ui:Button text="+" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Increase" />
+            <ui:Button text="-" parse-escape-sequences="true" display-tooltip-when-elided="true" name="del" />
+            <ui:Button text="+" parse-escape-sequences="true" display-tooltip-when-elided="true" name="add" />
         </ui:GroupBox>
     </ui:VisualElement>
 </ui:UXML>
