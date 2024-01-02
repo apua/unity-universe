@@ -1,4 +1,7 @@
+using System;
 using UnityEngine;
+using UnityEngine.UIElements;
+using Random = UnityEngine.Random;
 
 public class Universe : MonoBehaviour {
 
@@ -13,7 +16,9 @@ public class Universe : MonoBehaviour {
     void Start() {
         _prototype = transform.Find("StarPrototype").gameObject;
         _stars = transform.Find("Stars").gameObject;
-        for (int i = 0; i < InitialAmount; i++) AddStar();
+
+        var control = GetComponentInChildren<Control>();
+        for (int i = 0; i < InitialAmount; i++) AddStar(control.SetAmount);
     }
 
     void Update() {
@@ -28,7 +33,7 @@ public class Universe : MonoBehaviour {
 
     /* ******************** */
 
-    public void AddStar() {
+    public void AddStar(Action<int> action = null) {
         // New.
         var obj = Instantiate(_prototype);
         // Set parent to `Stars`.
@@ -42,13 +47,21 @@ public class Universe : MonoBehaviour {
         //obj.transform.localPosition = PointGenerators.Sphere();
         // Enable.
         obj.SetActive(true);
+
+        var finalCount = _stars.transform.childCount;
+        action?.Invoke(finalCount);
     }
 
-    public void DelStar() {
-        if (_stars.transform.childCount > 0) {
-            var index = _stars.transform.childCount - 1;
-            Destroy(_stars.transform.GetChild(index).gameObject);
-        }
+    public void DelStar(Action<int> action = null) {
+        if (_stars.transform.childCount <= 1) return;
+
+        // Calculate because `Destroy` works in next `Update` loop.
+        var finalCount = _stars.transform.childCount - 1;
+
+        var index = _stars.transform.childCount - 1;
+        Destroy(_stars.transform.GetChild(index).gameObject);
+
+        action?.Invoke(finalCount);
     }
 
     void UpdateCurrentColor() {

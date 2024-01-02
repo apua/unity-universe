@@ -12,7 +12,7 @@
             <ui:Button text="tetrahedron" parse-escape-sequences="true" display-tooltip-when-elided="true" name="tetrahedron" />
             <ui:Button text="escherian-knot" parse-escape-sequences="true" display-tooltip-when-elided="true" name="escherian-knot" />
         </ui:GroupBox>
-        <ui:Label tabindex="-1" text="Amount: 42" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Amount" />
+        <ui:Label tabindex="-1" text="Amount:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Amount" />
         <ui:GroupBox name="ControlAmount" style="flex-direction: row;">
             <ui:Button text="-" parse-escape-sequences="true" display-tooltip-when-elided="true" name="del" />
             <ui:Button text="+" parse-escape-sequences="true" display-tooltip-when-elided="true" name="add" />
