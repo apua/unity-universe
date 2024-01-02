@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 public class Universe : MonoBehaviour {
 
     GameObject _prototype, _stars;
-    Color _color = new(0, 0, 1, 0.5f);
+    Color _color = new(0, 0, 1);
 
     const ushort InitialAmount = 42;
 
