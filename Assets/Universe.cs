@@ -1,14 +1,17 @@
 using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 public class Universe : MonoBehaviour {
 
     GameObject _prototype, _stars;
     Color _color = new(0, 0, 1);
+    Vector3[] _finalPositions;
+    Vector3[] _velocities;
+    float _transformShapeDelay = 0f;
 
     const ushort InitialAmount = 42;
+    const float TotalTransformShapeDelay = 1.25f;
 
     public int DegreePerSecond = 36;
     public Vector3Int RotationAxis = new(60, 80, 0);
@@ -29,6 +32,19 @@ public class Universe : MonoBehaviour {
         foreach (Transform starTransform in _stars.transform) {
             starTransform.gameObject.GetComponent<Renderer>().material.color = _color;
         }
+        // Transform.
+        if (_transformShapeDelay > 0) {
+            if (_transformShapeDelay > Time.deltaTime) {
+                for (int i = 0; i < _stars.transform.childCount; i++)
+                    _stars.transform.GetChild(i).localPosition += _velocities[i] * Time.deltaTime;
+                _transformShapeDelay -= Time.deltaTime;
+            } else {
+                for (int i = 0; i < _stars.transform.childCount; i++)
+                    //_stars.transform.GetChild(i).localPosition += _velocities[i] * _transformShapeDelay;
+                    _stars.transform.GetChild(i).localPosition = _finalPositions[i];
+                _transformShapeDelay = 0f;
+            }
+        }
     }
 
     /* ******************** */
@@ -43,8 +59,8 @@ public class Universe : MonoBehaviour {
         // Color.
         obj.GetComponent<Renderer>().material.color = _color;
         // Set random position.
-        obj.transform.localPosition = PointGenerators.Ring();
-        //obj.transform.localPosition = PointGenerators.Sphere();
+        //obj.transform.localPosition = PointGenerators.Ring();
+        obj.transform.localPosition = PointGenerators.Sphere();
         // Enable.
         obj.SetActive(true);
 
@@ -80,6 +96,22 @@ public class Universe : MonoBehaviour {
         } else {
             var x = colorAcc - 2;
             _color.g = 0; _color.b = x; _color.r = 1 - x;
+        }
+    }
+
+    public void SetShape(string name) {
+        Func<Vector3> generator = name switch {
+            "sphere" => PointGenerators.Sphere,
+            _ => PointGenerators.Ring,
+        };
+
+        var N = _stars.transform.childCount;
+        _finalPositions = new Vector3[N];
+        _velocities = new Vector3[N];
+        _transformShapeDelay = TotalTransformShapeDelay;
+        for (int i = 0; i < N; i++) {
+            _finalPositions[i] = generator();
+            _velocities[i] = (_finalPositions[i] - _stars.transform.GetChild(i).localPosition) / TotalTransformShapeDelay;
         }
     }
 }
