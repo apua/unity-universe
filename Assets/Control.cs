@@ -1,12 +1,12 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Control : MonoBehaviour {
-
+public class Control : MonoBehaviour
+{
     Label _amount;
 
-    void OnEnable() {
+    void OnEnable()
+    {
         var root = GetComponent<UIDocument>().rootVisualElement;
         var universe = GetComponentInParent<Universe>();
 
@@ -29,7 +29,8 @@ public class Control : MonoBehaviour {
             root.Q(name).RegisterCallback<ClickEvent>(evt => universe.SetShape(name));
     }
 
-    public void SetAmount(int amount) {
+    public void SetAmount(int amount)
+    {
         _amount.text = $"Amount: {amount}";
     }
 }
