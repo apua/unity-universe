@@ -152,8 +152,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87befbbf34f1441c19a640f9a1a062ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  control: {fileID: 644085289}
+  prototype: {fileID: 1337292542}
+  stars: {fileID: 897686487}
   DegreePerSecond: 36
   RotationAxis: {x: 60, y: 80, z: 0}
+  Shape: 1
+  amount: 42
 --- !u!4 &77179604
 Transform:
   m_ObjectHideFlags: 0

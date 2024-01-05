@@ -2,6 +2,11 @@
  * TODO: Refactorign
  * 1. coding style, ref: https://github.com/dotnet/runtime/blob/main/docs/coding-guidelines/coding-style.md
  * 2. MVC
+ * 3. Dynamic set shapes
+ *
+ * The model have some variables "fields" allow to be modified in runtime:
+ * - amount
+ * - shape
  */
 
 using System;
@@ -10,62 +15,77 @@ using Random = UnityEngine.Random;
 
 public class Universe : MonoBehaviour
 {
-    GameObject _prototype, _stars;
+    public Control control;
+    public GameObject prototype;
+    public GameObject stars;
+    public int DegreePerSecond;
+    public Vector3Int RotationAxis;
+    public ushort amount;
+    public Shapes Shape;
+
     Color _color = new(0, 0, 1);
     Vector3[] _finalPositions;
     Vector3[] _velocities;
     float _transformShapeDelay = 0f;
 
-    const ushort InitialAmount = 42;
     const float TotalTransformShapeDelay = 1.25f;
-
-    public int DegreePerSecond = 36;
-    public Vector3Int RotationAxis = new(60, 80, 0);
 
     void Start()
     {
-        _prototype = transform.Find("StarPrototype").gameObject;
-        _stars = transform.Find("Stars").gameObject;
-
-        var control = GetComponentInChildren<Control>();
-        for (int i = 0; i < InitialAmount; i++) AddStar(control.SetAmount);
+        UpdateAmount();
     }
 
     void Update()
     {
+        UpdateAmount();
         // Rotate.
-        _stars.transform.Rotate(axis: RotationAxis, angle: DegreePerSecond * Time.deltaTime);
+        stars.transform.Rotate(axis: RotationAxis, angle: DegreePerSecond * Time.deltaTime);
         // Color.
         UpdateCurrentColor();
-        foreach (Transform starTransform in _stars.transform)
+        foreach (Transform starTransform in stars.transform)
             starTransform.gameObject.GetComponent<Renderer>().material.color = _color;
         // Transform.
         if (_transformShapeDelay > 0)
             if (_transformShapeDelay > Time.deltaTime)
             {
-                for (int i = 0; i < _stars.transform.childCount; i++)
-                    _stars.transform.GetChild(i).localPosition += _velocities[i] * Time.deltaTime;
+                for (int i = 0; i < stars.transform.childCount; i++)
+                    stars.transform.GetChild(i).localPosition += _velocities[i] * Time.deltaTime;
                 _transformShapeDelay -= Time.deltaTime;
             }
             else
             {
-                for (int i = 0; i < _stars.transform.childCount; i++)
-                    //_stars.transform.GetChild(i).localPosition += _velocities[i] * _transformShapeDelay;
-                    _stars.transform.GetChild(i).localPosition = _finalPositions[i];
+                for (int i = 0; i < stars.transform.childCount; i++)
+                    //stars.transform.GetChild(i).localPosition += _velocities[i] * _transformShapeDelay;
+                    stars.transform.GetChild(i).localPosition = _finalPositions[i];
                 _transformShapeDelay = 0f;
             }
     }
 
+    void UpdateAmount()
+    {
+        var count = stars.transform.childCount;
+        if (amount > count)
+        {
+            AddStar();
+            control.SetAmount(count + 1);
+        }
+        if (amount < count)
+        {
+            DelStar();
+            control.SetAmount(count - 1);
+        }
+    }
+
     /* ******************** */
 
-    public void AddStar(Action<int> action = null)
+    public void AddStar()
     {
         // New.
-        var obj = Instantiate(_prototype);
+        var obj = Instantiate(prototype);
         // Set parent to `Stars`.
-        obj.transform.parent = _stars.transform;
+        obj.transform.parent = stars.transform;
         // Name "Star-{N}".
-        obj.name = $"Star-{_stars.transform.childCount}";
+        obj.name = $"Star-{stars.transform.childCount}";
         // Color.
         obj.GetComponent<Renderer>().material.color = _color;
         // Set random position.
@@ -73,23 +93,12 @@ public class Universe : MonoBehaviour
         obj.transform.localPosition = PointGenerators.Sphere();
         // Enable.
         obj.SetActive(true);
-
-        var finalCount = _stars.transform.childCount;
-        action?.Invoke(finalCount);
     }
 
-    public void DelStar(Action<int> action = null)
+    public void DelStar()
     {
-        if (_stars.transform.childCount <= 1)
-            return;
-
-        // Calculate because `Destroy` works in next `Update` loop.
-        var finalCount = _stars.transform.childCount - 1;
-
-        var index = _stars.transform.childCount - 1;
-        Destroy(_stars.transform.GetChild(index).gameObject);
-
-        action?.Invoke(finalCount);
+        var index = stars.transform.childCount - 1;
+        Destroy(stars.transform.GetChild(index).gameObject);
     }
 
     void UpdateCurrentColor()
@@ -125,14 +134,14 @@ public class Universe : MonoBehaviour
             _ => PointGenerators.Ring,
         };
 
-        var N = _stars.transform.childCount;
+        var N = stars.transform.childCount;
         _finalPositions = new Vector3[N];
         _velocities = new Vector3[N];
         _transformShapeDelay = TotalTransformShapeDelay;
         for (int i = 0; i < N; i++)
         {
             _finalPositions[i] = generator();
-            _velocities[i] = (_finalPositions[i] - _stars.transform.GetChild(i).localPosition) / TotalTransformShapeDelay;
+            _velocities[i] = (_finalPositions[i] - stars.transform.GetChild(i).localPosition) / TotalTransformShapeDelay;
         }
     }
 }
@@ -159,4 +168,10 @@ class PointGenerators
             0,
             Radius * Mathf.Sin(θ));
     }
+}
+
+public enum Shapes
+{
+    Sphere,
+    Ring,
 }

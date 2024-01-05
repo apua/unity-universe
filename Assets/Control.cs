@@ -12,8 +12,8 @@ public class Control : MonoBehaviour
 
         _amount = root.Q("Amount") as Label;
 
-        root.Q("add").RegisterCallback<ClickEvent>(evt => universe.AddStar(action: SetAmount));
-        root.Q("del").RegisterCallback<ClickEvent>(evt => universe.DelStar(action: SetAmount));
+        root.Q("add").RegisterCallback<ClickEvent>(evt => universe.amount += (ushort)(universe.amount < 65535 ? 1 : 0));
+        root.Q("del").RegisterCallback<ClickEvent>(evt => universe.amount -= (ushort)(universe.amount > 0     ? 1 : 0));
 
         string[] shapeNames = {
             "sphere",
