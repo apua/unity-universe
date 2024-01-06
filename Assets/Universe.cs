@@ -20,7 +20,7 @@ public class Universe : MonoBehaviour
     public GameObject stars;
     public int DegreePerSecond;
     public Vector3Int RotationAxis;
-    public ushort amount;
+    public ushort Amount;
     public Shapes Shape;
 
     Vector3[] _finalPositions;
@@ -60,16 +60,18 @@ public class Universe : MonoBehaviour
     void AdjustQuantity()
     {
         var count = stars.transform.childCount;
-        if (amount > count)
+        if (Amount > count)
         {
             AddStar();
             control.SetAmount(count + 1);
         }
-        if (amount < count)
+        else if (Amount < count)
         {
             DelStar();
             control.SetAmount(count - 1);
         }
+        else
+        {}
     }
 
     void SetColor()

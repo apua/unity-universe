@@ -12,8 +12,8 @@ public class Control : MonoBehaviour
 
         _amount = root.Q("Amount") as Label;
 
-        root.Q("add").RegisterCallback<ClickEvent>(evt => universe.amount += (ushort)(universe.amount < 65535 ? 1 : 0));
-        root.Q("del").RegisterCallback<ClickEvent>(evt => universe.amount -= (ushort)(universe.amount > 0     ? 1 : 0));
+        root.Q("add").RegisterCallback<ClickEvent>(evt => universe.Amount += (ushort)(universe.Amount < 65535 ? 1 : 0));
+        root.Q("del").RegisterCallback<ClickEvent>(evt => universe.Amount -= (ushort)(universe.Amount > 0     ? 1 : 0));
 
         foreach (var name in new string[] { "sphere", "ring", "2ring", "cage", "2cube", "2sphere", "tetrahedron", "escherian-knot" })
             root.Q(name).RegisterCallback<ClickEvent>(evt => universe.Shape = name switch {
