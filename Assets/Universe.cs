@@ -112,16 +112,10 @@ public class Universe : MonoBehaviour
 
     public void AddStar()
     {
-        // New.
         var obj = Instantiate(prototype);
-        // Set parent to `Stars`.
         obj.transform.parent = stars.transform;
-        // Name "Star-{N}".
         obj.name = $"Star-{stars.transform.childCount}";
-        // Set random position.
-        //obj.transform.localPosition = PointGenerators.Ring();
-        obj.transform.localPosition = PointGenerators.Sphere();
-        // Enable.
+        obj.transform.localPosition = GenerateRandomPoint();
         obj.SetActive(true);
     }
 
@@ -129,6 +123,14 @@ public class Universe : MonoBehaviour
     {
         var index = stars.transform.childCount - 1;
         Destroy(stars.transform.GetChild(index).gameObject);
+    }
+
+    public Vector3 GenerateRandomPoint()
+    {
+        return Shape switch {
+            Shapes.Sphere => PointGenerators.Sphere(),
+            _ => PointGenerators.Ring(),
+        };
     }
 }
 
