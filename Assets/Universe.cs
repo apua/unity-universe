@@ -9,9 +9,9 @@
  * - shape
  */
 
-using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class Universe : MonoBehaviour
 {
@@ -23,14 +23,13 @@ public class Universe : MonoBehaviour
     public ushort Amount;
     public Shapes Shape;
 
-    Vector3[] _finalPositions;
-    Vector3[] _velocities;
-    float _transformShapeDelay = 0f;
-
-    const float TotalTransformShapeDelay = 1.25f;
+    Shapes _currentShape, _transformShape;
+    float _transformDeltaTime = 0;
+    List<Vector3> _transformVelocities = new();
 
     void Start()
     {
+        _currentShape = _transformShape = Shape;
         AdjustQuantity();
         SetColor();
     }
@@ -46,12 +45,12 @@ public class Universe : MonoBehaviour
     void AdjustQuantity()
     {
         var count = stars.transform.childCount;
-        if (Amount > count)
+        if (count < Amount)
         {
             AddStar();
             control.SetAmount(count + 1);
         }
-        else if (Amount < count)
+        else if (count > Amount)
         {
             DelStar();
             control.SetAmount(count - 1);
@@ -92,22 +91,56 @@ public class Universe : MonoBehaviour
         stars.transform.Rotate(axis: RotationAxis, angle: DegreePerSecond * Time.deltaTime);
     }
 
-    // If `Shape` match current shape, return.
-    //
-    // If "trans" not exist or not match `Shape`, new by `Amount`.
-    // else if "trans" not match `Amount`, adjust.
-    // else, OK.
-    //
-    // Transform and update "trans".
-    //
-    // If trans is empty, set current shape to `Shape`.
-    //
-    // Note: `AddStar` by origin shape instead of `Shape`.
-    //
-    // Design: New star during shape transformation could has individual timer, but it is necessary;
-    // both shape transformation and amount changing have animation, it is sufficient.
     void TransformShape()
     {
+        if (_currentShape == Shape)
+            return;
+
+        if (_transformShape != Shape)
+        {   // Start or restart a transformation.
+            _transformShape = Shape;
+            _transformDeltaTime = 1.25f;
+            _transformVelocities.AddRange(Enumerable.Range(0, stars.transform.childCount).Select(index =>
+                (GenerateRandomPoint(_transformShape) - stars.transform.GetChild(index).localPosition) / _transformDeltaTime
+            ));
+        }
+        else
+        {   // `childCount` changes during a transformation.
+            var addition = stars.transform.childCount - _transformVelocities.Count;
+            if (addition > 0)
+            {
+                var count = addition;
+                var start = stars.transform.childCount - count;
+                _transformVelocities.AddRange(Enumerable.Range(start, count).Select(index =>
+                    (GenerateRandomPoint(_transformShape) - stars.transform.GetChild(index).localPosition) / _transformDeltaTime
+                ));
+            }
+            else if (addition < 0)
+            {
+                var count = -addition;
+                var index = _transformVelocities.Count - count;
+                _transformVelocities.RemoveRange(index, count);
+            }
+            else
+            {}
+        }
+
+        if (_transformDeltaTime > Time.deltaTime)
+        {
+            for (int i = 0; i < stars.transform.childCount; i++)
+                stars.transform.GetChild(i).localPosition += _transformVelocities[i] * Time.deltaTime;
+
+            _transformDeltaTime -= Time.deltaTime;
+        }
+        else
+        {
+            for (int i = 0; i < stars.transform.childCount; i++)
+                stars.transform.GetChild(i).localPosition += _transformVelocities[i] * _transformDeltaTime;
+
+            _currentShape = _transformShape = Shape;
+            _transformDeltaTime = 0f;
+            _transformVelocities.Clear();
+        }
     }
 
     public void AddStar()
@@ -115,7 +148,7 @@ public class Universe : MonoBehaviour
         var obj = Instantiate(prototype);
         obj.transform.parent = stars.transform;
         obj.name = $"Star-{stars.transform.childCount}";
-        obj.transform.localPosition = GenerateRandomPoint();
+        obj.transform.localPosition = GenerateRandomPoint(_currentShape);
         obj.SetActive(true);
     }
 
@@ -125,9 +158,9 @@ public class Universe : MonoBehaviour
         Destroy(stars.transform.GetChild(index).gameObject);
     }
 
-    public Vector3 GenerateRandomPoint()
+    public Vector3 GenerateRandomPoint(Shapes shape)
     {
-        return Shape switch {
+        return shape switch {
             Shapes.Sphere => PointGenerators.Sphere(),
             _ => PointGenerators.Ring(),
         };
@@ -145,7 +178,8 @@ class PointGenerators
         return new(
             Radius * Mathf.Sin(φ) * Mathf.Cos(θ),
             Radius * Mathf.Cos(φ) * (Random.value > 0.5 ? 1 : -1),
-            Radius * Mathf.Sin(φ) * Mathf.Sin(θ));
+            Radius * Mathf.Sin(φ) * Mathf.Sin(θ)
+        );
     }
 
     public static Vector3 Ring()
@@ -154,7 +188,8 @@ class PointGenerators
         return new(
             Radius * Mathf.Cos(θ),
             0,
-            Radius * Mathf.Sin(θ));
+            Radius * Mathf.Sin(θ)
+        );
     }
 }
 
