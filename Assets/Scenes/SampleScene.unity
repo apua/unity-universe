@@ -157,7 +157,7 @@ MonoBehaviour:
   stars: {fileID: 897686487}
   DegreePerSecond: 36
   RotationAxis: {x: 60, y: 80, z: 0}
-  Amount: 255
+  Amount: 128
   Shape: 1
 --- !u!4 &77179604
 Transform:
