@@ -59,26 +59,22 @@ public class Universe : MonoBehaviour
         {}
     }
 
-    // Change color:
-    // B   -> G   -> R   -> B i.e.
-    // 001 -> 010 -> 100 -> 001 i.e.
-    // 0   -> 1   -> 2   -> 3
-    // 0 -> 1 taks 2.5 seconds; per second is 0 -> 0.4
     void SetColor()
     {
+        // Every color changing takes 2.5 seconds.
         var t = Time.time * 0.4f % 3;
         Color color;
         if (t <= 1)
-        {
+        {   // Blue (0, 0, 1) → Green (0, 1, 0)
             color = new(0, t, 1 - t);
         }
         else if (t <= 2)
-        {
+        {   // Green (0, 1, 0) → Red (1, 0, 0)
             t -= 1;
             color = new(t, 1 - t, 0);
         }
         else
-        {
+        {   // Red (1, 0, 0) → Blue (0, 0, 1)
             t -= 2;
             color = new(1 - t, 0, t);
         }
