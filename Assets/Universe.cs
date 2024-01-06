@@ -158,7 +158,15 @@ public class Universe : MonoBehaviour
     {
         return shape switch {
             Shapes.Sphere => PointGenerators.Sphere(),
-            _ => PointGenerators.Ring(),
+            Shapes.Ring => PointGenerators.Ring(),
+            Shapes.Pie => PointGenerators.Pie(),
+            Shapes.TwoRing => PointGenerators.TwoRing(),
+            Shapes.Cage => PointGenerators.Cage(),
+            Shapes.TwoCube => PointGenerators.TwoCube(),
+            Shapes.TwoSphere => PointGenerators.TwoSphere(),
+            Shapes.Tetrahedron => PointGenerators.Tetrahedron(),
+            Shapes.EscherianKnot => PointGenerators.EscherianKnot(),
+            _ => throw new System.Exception(),
         };
     }
 }
@@ -187,10 +195,121 @@ class PointGenerators
             Radius * Mathf.Sin(θ)
         );
     }
+
+    public static Vector3 Pie()
+    {
+        var θ = Random.value * 2 * Mathf.PI;
+        var r = Mathf.Sqrt(Random.value);
+        return new(
+            Radius * r * Mathf.Cos(θ),
+            0,
+            Radius * r * Mathf.Sin(θ)
+        );
+    }
+
+    public static Vector3 TwoRing()
+    {
+        var θ = Random.value * 2 * Mathf.PI;
+        if (Random.value < 0.5)
+            return new(
+                Radius * 2/3 * Mathf.Cos(θ) + Radius / 3,
+                0,
+                Radius * 2/3 * Mathf.Sin(θ)
+            );
+        else
+            return new(
+                Radius * 2/3 * Mathf.Cos(θ) - Radius / 3,
+                Radius * 2/3 * Mathf.Sin(θ),
+                0
+            );
+    }
+
+    public static Vector3 Cage()
+    {
+        var θ = Random.value * 2 * Mathf.PI;
+        return (Random.value * 3) switch {
+            < 1 => new(0, Radius * Mathf.Cos(θ), Radius * Mathf.Sin(θ)),
+            < 2 => new(Radius * Mathf.Cos(θ), 0, Radius * Mathf.Sin(θ)),
+            < 3 => new(Radius * Mathf.Cos(θ), Radius * Mathf.Sin(θ), 0),
+            _ => throw new System.Exception(),
+        };
+    }
+
+    public static Vector3 TwoCube()
+    {
+        var θ = Random.value * 2 * Mathf.PI;
+        var r = Radius / Mathf.Sqrt(3) / (Random.value * 3 < 1 ? 2 : 1);
+        var p = Random.value * 2 - 1;
+        return (Random.value * 12) switch {
+            <  1 => new(p * r,  r,  r),
+            <  2 => new(p * r,  r, -r),
+            <  3 => new(p * r, -r,  r),
+            <  4 => new(p * r, -r, -r),
+            <  5 => new( r, p * r,  r),
+            <  6 => new( r, p * r, -r),
+            <  7 => new(-r, p * r,  r),
+            <  8 => new(-r, p * r, -r),
+            <  9 => new( r,  r, p * r),
+            < 10 => new( r, -r, p * r),
+            < 11 => new(-r,  r, p * r),
+            < 12 => new(-r, -r, p * r),
+            _ => throw new System.Exception(),
+        };
+    }
+
+    public static Vector3 TwoSphere()
+    {
+        var θ = Random.value * 2 * Mathf.PI;
+        var φ = Random.value * 2 * Mathf.PI;
+        var x = Random.value < 0.5 ? 1 : -1;
+        return new(
+            Radius / 2 * Mathf.Cos(φ) * Mathf.Cos(θ) + Radius * 2/3 * x,
+            Radius / 2 * Mathf.Sin(φ),
+            Radius / 2 * Mathf.Cos(φ) * Mathf.Sin(θ)
+        );
+    }
+
+    public static Vector3 Tetrahedron()
+    {
+        var (v, w) = (Random.value * 6) switch {
+            <  1 => ((X:  1, Y:  1, Z: 1), (X: -1, Y: -1, Z:  1)),
+            <  2 => ((X:  1, Y:  1, Z: 1), (X:  1, Y: -1, Z: -1)),
+            <  3 => ((X:  1, Y:  1, Z: 1), (X: -1, Y:  1, Z: -1)),
+            <  4 => ((X: -1, Y: -1, Z: 1), (X:  1, Y: -1, Z: -1)),
+            <  5 => ((X: -1, Y: -1, Z: 1), (X: -1, Y:  1, Z: -1)),
+            <  6 => ((X:  1, Y: -1, Z:-1), (X: -1, Y:  1, Z: -1)),
+            _ => throw new System. Exception(),
+        };
+        var p = Random.value;
+        return new(
+            Radius * 2/3 * (v.X + p * (w.X - v.X)),
+            Radius * 2/3 * (v.Y + p * (w.Y - v.Y)),
+            Radius * 2/3 * (v.Z + p * (w.Z - v.Z))
+        );
+    }
+
+    public static Vector3 EscherianKnot()
+    {
+        var θ = Random.value * 2 * Mathf.PI;
+        var φ = (Mathf.Cos(3 * θ) + 3) * Mathf.PI / 6;
+        var r = (Mathf.Sin(3 * θ) + 3) * Radius / 4;
+        return new(
+            r * Mathf.Sin(φ) * Mathf.Cos(2 * θ),
+            r * Mathf.Cos(φ),
+            r * Mathf.Sin(φ) * Mathf.Sin(2 * θ)
+        );
+    }
 }
 
 public enum Shapes
 {
     Sphere,
     Ring,
+    Pie,
+    TwoRing,
+    Cage,
+    TwoCube,
+    TwoSphere,
+    Tetrahedron,
+    EscherianKnot,
 }

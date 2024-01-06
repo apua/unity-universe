@@ -5,6 +5,7 @@
         <ui:GroupBox name="ShapeOptions">
             <ui:Button text="sphere" parse-escape-sequences="true" display-tooltip-when-elided="true" name="sphere" />
             <ui:Button text="ring" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ring" />
+            <ui:Button text="pie" parse-escape-sequences="true" display-tooltip-when-elided="true" name="pie" />
             <ui:Button text="2ring" parse-escape-sequences="true" display-tooltip-when-elided="true" name="2ring" />
             <ui:Button text="cage" parse-escape-sequences="true" display-tooltip-when-elided="true" name="cage" />
             <ui:Button text="2cube" parse-escape-sequences="true" display-tooltip-when-elided="true" name="2cube" />
