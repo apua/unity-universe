@@ -40,21 +40,7 @@ public class Universe : MonoBehaviour
         AdjustQuantity();
         SetColor();
         Rotate();
-        // Transform.
-        if (_transformShapeDelay > 0)
-            if (_transformShapeDelay > Time.deltaTime)
-            {
-                for (int i = 0; i < stars.transform.childCount; i++)
-                    stars.transform.GetChild(i).localPosition += _velocities[i] * Time.deltaTime;
-                _transformShapeDelay -= Time.deltaTime;
-            }
-            else
-            {
-                for (int i = 0; i < stars.transform.childCount; i++)
-                    //stars.transform.GetChild(i).localPosition += _velocities[i] * _transformShapeDelay;
-                    stars.transform.GetChild(i).localPosition = _finalPositions[i];
-                _transformShapeDelay = 0f;
-            }
+        TransformShape();
     }
 
     void AdjustQuantity()
@@ -74,13 +60,13 @@ public class Universe : MonoBehaviour
         {}
     }
 
+    // Change color:
+    // B   -> G   -> R   -> B i.e.
+    // 001 -> 010 -> 100 -> 001 i.e.
+    // 0   -> 1   -> 2   -> 3
+    // 0 -> 1 taks 2.5 seconds; per second is 0 -> 0.4
     void SetColor()
     {
-        // Change color:
-        // B   -> G   -> R   -> B i.e.
-        // 001 -> 010 -> 100 -> 001 i.e.
-        // 0   -> 1   -> 2   -> 3
-        // 0 -> 1 taks 2.5 seconds; per second is 0 -> 0.4
         var t = Time.time * 0.4f % 3;
         Color color;
         if (t <= 1)
@@ -106,7 +92,23 @@ public class Universe : MonoBehaviour
         stars.transform.Rotate(axis: RotationAxis, angle: DegreePerSecond * Time.deltaTime);
     }
 
-    /* ******************** */
+    // If `Shape` match current shape, return.
+    //
+    // If "trans" not exist or not match `Shape`, new by `Amount`.
+    // else if "trans" not match `Amount`, adjust.
+    // else, OK.
+    //
+    // Transform and update "trans".
+    //
+    // If trans is empty, set current shape to `Shape`.
+    //
+    // Note: `AddStar` by origin shape instead of `Shape`.
+    //
+    // Design: New star during shape transformation could has individual timer, but it is necessary;
+    // both shape transformation and amount changing have animation, it is sufficient.
+    void TransformShape()
+    {
+    }
 
     public void AddStar()
     {
@@ -127,25 +129,6 @@ public class Universe : MonoBehaviour
     {
         var index = stars.transform.childCount - 1;
         Destroy(stars.transform.GetChild(index).gameObject);
-    }
-
-    public void SetShape(string name)
-    {
-        Func<Vector3> generator = name switch
-        {
-            "sphere" => PointGenerators.Sphere,
-            _ => PointGenerators.Ring,
-        };
-
-        var N = stars.transform.childCount;
-        _finalPositions = new Vector3[N];
-        _velocities = new Vector3[N];
-        _transformShapeDelay = TotalTransformShapeDelay;
-        for (int i = 0; i < N; i++)
-        {
-            _finalPositions[i] = generator();
-            _velocities[i] = (_finalPositions[i] - stars.transform.GetChild(i).localPosition) / TotalTransformShapeDelay;
-        }
     }
 }
 
