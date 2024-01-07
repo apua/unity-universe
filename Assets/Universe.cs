@@ -1,14 +1,3 @@
-/*
- * TODO: Refactorign
- * 1. coding style, ref: https://github.com/dotnet/runtime/blob/main/docs/coding-guidelines/coding-style.md
- * 2. MVC
- * 3. Dynamic set shapes
- *
- * The model have some variables "fields" allow to be modified in runtime:
- * - amount
- * - shape
- */
-
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -175,19 +164,21 @@ public class Shapes
 
     public static Vector3 GeneratePoint(Shapes.Name shape)
     {
-        return shape switch
-        {
-            Shapes.Name.Sphere => Sphere(),
-            Shapes.Name.Ring => Ring(),
-            Shapes.Name.Pie => Pie(),
-            Shapes.Name.TwoRing => TwoRing(),
-            Shapes.Name.Cage => Cage(),
-            Shapes.Name.TwoCube => TwoCube(),
-            Shapes.Name.TwoSphere => TwoSphere(),
-            Shapes.Name.Tetrahedron => Tetrahedron(),
-            Shapes.Name.EscherianKnot => EscherianKnot(),
-            _ => throw new System.Exception(),
-        };
+        var methodInfo = typeof(Shapes).GetMethod(shape.ToString());
+        return (Vector3)methodInfo.Invoke(null, null);
+        //return shape switch
+        //{
+        //    Shapes.Name.Sphere => Sphere(),
+        //    Shapes.Name.Ring => Ring(),
+        //    Shapes.Name.Pie => Pie(),
+        //    Shapes.Name.TwoRing => TwoRing(),
+        //    Shapes.Name.Cage => Cage(),
+        //    Shapes.Name.TwoCube => TwoCube(),
+        //    Shapes.Name.TwoSphere => TwoSphere(),
+        //    Shapes.Name.Tetrahedron => Tetrahedron(),
+        //    Shapes.Name.EscherianKnot => EscherianKnot(),
+        //    _ => throw new System.Exception(),
+        //};
     }
 
     public static Vector3 Sphere()
