@@ -162,6 +162,11 @@ public class Shapes
         EscherianKnot,
     }
 
+    public static Name ToEnum(string shapeName)
+    {
+        return (Name)System.Enum.Parse(typeof(Name), shapeName);
+    }
+
     public static Vector3 GeneratePoint(Shapes.Name shape)
     {
         var methodInfo = typeof(Shapes).GetMethod(shape.ToString());

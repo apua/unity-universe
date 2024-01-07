@@ -3,20 +3,20 @@
     <ui:VisualElement name="Container" style="justify-content: flex-end; align-items: flex-start; position: absolute; bottom: 0;">
         <ui:Label tabindex="-1" text="Shape:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Shape" />
         <ui:GroupBox name="ShapeOptions">
-            <ui:Button text="sphere" parse-escape-sequences="true" display-tooltip-when-elided="true" name="sphere" />
-            <ui:Button text="ring" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ring" />
-            <ui:Button text="pie" parse-escape-sequences="true" display-tooltip-when-elided="true" name="pie" />
-            <ui:Button text="2ring" parse-escape-sequences="true" display-tooltip-when-elided="true" name="2ring" />
-            <ui:Button text="cage" parse-escape-sequences="true" display-tooltip-when-elided="true" name="cage" />
-            <ui:Button text="2cube" parse-escape-sequences="true" display-tooltip-when-elided="true" name="2cube" />
-            <ui:Button text="2sphere" parse-escape-sequences="true" display-tooltip-when-elided="true" name="2sphere" />
-            <ui:Button text="tetrahedron" parse-escape-sequences="true" display-tooltip-when-elided="true" name="tetrahedron" />
-            <ui:Button text="escherian-knot" parse-escape-sequences="true" display-tooltip-when-elided="true" name="escherian-knot" />
+            <ui:Button text="sphere" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Sphere" />
+            <ui:Button text="ring" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Ring" />
+            <ui:Button text="pie" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Pie" />
+            <ui:Button text="2ring" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TwoRing" />
+            <ui:Button text="cage" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Cage" />
+            <ui:Button text="2cube" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TwoCube" />
+            <ui:Button text="2sphere" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TwoSphere" />
+            <ui:Button text="tetrahedron" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Tetrahedron" />
+            <ui:Button text="escherian-knot" parse-escape-sequences="true" display-tooltip-when-elided="true" name="EscherianKnot" />
         </ui:GroupBox>
         <ui:Label tabindex="-1" text="Amount:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Amount" />
         <ui:GroupBox name="ControlAmount" style="flex-direction: row;">
-            <ui:Button text="-" parse-escape-sequences="true" display-tooltip-when-elided="true" name="del" />
-            <ui:Button text="+" parse-escape-sequences="true" display-tooltip-when-elided="true" name="add" />
+            <ui:Button text="-" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Del" />
+            <ui:Button text="+" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Add" />
         </ui:GroupBox>
     </ui:VisualElement>
 </ui:UXML>
