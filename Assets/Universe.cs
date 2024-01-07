@@ -300,9 +300,9 @@ public class Shapes
         };
         var p = Random.value;
         return new(
-            Radius * 2/3 * (v.X + p * (w.X - v.X)),
-            Radius * 2/3 * (v.Y + p * (w.Y - v.Y)),
-            Radius * 2/3 * (v.Z + p * (w.Z - v.Z))
+            Radius / 2 * (v.X + p * (w.X - v.X)),
+            Radius / 2 * (v.Y + p * (w.Y - v.Y)),
+            Radius / 2 * (v.Z + p * (w.Z - v.Z))
         );
     }
 
