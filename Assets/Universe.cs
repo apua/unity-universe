@@ -156,7 +156,8 @@ public class Universe : MonoBehaviour
 
     public Vector3 GenerateRandomPoint(Shapes shape)
     {
-        return shape switch {
+        return shape switch
+        {
             Shapes.Sphere => PointGenerators.Sphere(),
             Shapes.Ring => PointGenerators.Ring(),
             Shapes.Pie => PointGenerators.Pie(),
@@ -227,7 +228,8 @@ class PointGenerators
     public static Vector3 Cage()
     {
         var θ = Random.value * 2 * Mathf.PI;
-        return (Random.value * 3) switch {
+        return (Random.value * 3) switch
+        {
             < 1 => new(0, Radius * Mathf.Cos(θ), Radius * Mathf.Sin(θ)),
             < 2 => new(Radius * Mathf.Cos(θ), 0, Radius * Mathf.Sin(θ)),
             < 3 => new(Radius * Mathf.Cos(θ), Radius * Mathf.Sin(θ), 0),
@@ -240,7 +242,8 @@ class PointGenerators
         var θ = Random.value * 2 * Mathf.PI;
         var r = Radius / Mathf.Sqrt(3) / (Random.value * 3 < 1 ? 2 : 1);
         var p = Random.value * 2 - 1;
-        return (Random.value * 12) switch {
+        return (Random.value * 12) switch
+        {
             <  1 => new(p * r,  r,  r),
             <  2 => new(p * r,  r, -r),
             <  3 => new(p * r, -r,  r),
@@ -271,7 +274,8 @@ class PointGenerators
 
     public static Vector3 Tetrahedron()
     {
-        var (v, w) = (Random.value * 6) switch {
+        var (v, w) = (Random.value * 6) switch
+        {
             <  1 => ((X:  1, Y:  1, Z: 1), (X: -1, Y: -1, Z:  1)),
             <  2 => ((X:  1, Y:  1, Z: 1), (X:  1, Y: -1, Z: -1)),
             <  3 => ((X:  1, Y:  1, Z: 1), (X: -1, Y:  1, Z: -1)),
