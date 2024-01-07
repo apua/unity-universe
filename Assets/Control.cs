@@ -17,15 +17,15 @@ public class Control : MonoBehaviour
 
         foreach (var name in new string[] { "sphere", "ring", "pie", "2ring", "cage", "2cube", "2sphere", "tetrahedron", "escherian-knot" })
             root.Q(name).RegisterCallback<ClickEvent>(evt => universe.Shape = name switch {
-                "sphere" => Shapes.Sphere,
-                "ring" => Shapes.Ring,
-                "pie" => Shapes.Pie,
-                "2ring" => Shapes.TwoRing,
-                "cage" => Shapes.Cage,
-                "2cube" => Shapes.TwoCube,
-                "2sphere" => Shapes.TwoSphere,
-                "tetrahedron" => Shapes.Tetrahedron,
-                "escherian-knot" => Shapes.EscherianKnot,
+                "sphere" => Shapes.Name.Sphere,
+                "ring" => Shapes.Name.Ring,
+                "pie" => Shapes.Name.Pie,
+                "2ring" => Shapes.Name.TwoRing,
+                "cage" => Shapes.Name.Cage,
+                "2cube" => Shapes.Name.TwoCube,
+                "2sphere" => Shapes.Name.TwoSphere,
+                "tetrahedron" => Shapes.Name.Tetrahedron,
+                "escherian-knot" => Shapes.Name.EscherianKnot,
                 _ => throw new System.Exception(),
             });
     }

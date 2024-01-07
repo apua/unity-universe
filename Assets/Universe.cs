@@ -21,9 +21,10 @@ public class Universe : MonoBehaviour
     public int DegreePerSecond;
     public Vector3Int RotationAxis;
     public ushort Amount;
-    public Shapes Shape;
+    public Shapes.Name Shape;
 
-    Shapes _currentShape, _transformShape;
+
+    Shapes.Name _currentShape, _transformShape;
     float _transformDeltaTime = 0;
     List<Vector3> _transformVelocities = new();
 
@@ -97,7 +98,7 @@ public class Universe : MonoBehaviour
             _transformShape = Shape;
             _transformDeltaTime = 1.25f;
             _transformVelocities.AddRange(Enumerable.Range(0, stars.transform.childCount).Select(index =>
-                (GenerateRandomPoint(_transformShape) - stars.transform.GetChild(index).localPosition) / _transformDeltaTime
+                (Shapes.GeneratePoint(_transformShape) - stars.transform.GetChild(index).localPosition) / _transformDeltaTime
             ));
         }
         else
@@ -108,7 +109,7 @@ public class Universe : MonoBehaviour
                 var count = addition;
                 var start = stars.transform.childCount - count;
                 _transformVelocities.AddRange(Enumerable.Range(start, count).Select(index =>
-                    (GenerateRandomPoint(_transformShape) - stars.transform.GetChild(index).localPosition) / _transformDeltaTime
+                    (Shapes.GeneratePoint(_transformShape) - stars.transform.GetChild(index).localPosition) / _transformDeltaTime
                 ));
             }
             else if (addition < 0)
@@ -144,7 +145,7 @@ public class Universe : MonoBehaviour
         var obj = Instantiate(prototype);
         obj.transform.parent = stars.transform;
         obj.name = $"Star-{stars.transform.childCount}";
-        obj.transform.localPosition = GenerateRandomPoint(_currentShape);
+        obj.transform.localPosition = Shapes.GeneratePoint(_currentShape);
         obj.SetActive(true);
     }
 
@@ -153,28 +154,41 @@ public class Universe : MonoBehaviour
         var index = stars.transform.childCount - 1;
         Destroy(stars.transform.GetChild(index).gameObject);
     }
+}
 
-    public Vector3 GenerateRandomPoint(Shapes shape)
+public class Shapes
+{
+    const ushort Radius = 10;
+
+    public enum Name
+    {
+        Sphere,
+        Ring,
+        Pie,
+        TwoRing,
+        Cage,
+        TwoCube,
+        TwoSphere,
+        Tetrahedron,
+        EscherianKnot,
+    }
+
+    public static Vector3 GeneratePoint(Shapes.Name shape)
     {
         return shape switch
         {
-            Shapes.Sphere => PointGenerators.Sphere(),
-            Shapes.Ring => PointGenerators.Ring(),
-            Shapes.Pie => PointGenerators.Pie(),
-            Shapes.TwoRing => PointGenerators.TwoRing(),
-            Shapes.Cage => PointGenerators.Cage(),
-            Shapes.TwoCube => PointGenerators.TwoCube(),
-            Shapes.TwoSphere => PointGenerators.TwoSphere(),
-            Shapes.Tetrahedron => PointGenerators.Tetrahedron(),
-            Shapes.EscherianKnot => PointGenerators.EscherianKnot(),
+            Shapes.Name.Sphere => Sphere(),
+            Shapes.Name.Ring => Ring(),
+            Shapes.Name.Pie => Pie(),
+            Shapes.Name.TwoRing => TwoRing(),
+            Shapes.Name.Cage => Cage(),
+            Shapes.Name.TwoCube => TwoCube(),
+            Shapes.Name.TwoSphere => TwoSphere(),
+            Shapes.Name.Tetrahedron => Tetrahedron(),
+            Shapes.Name.EscherianKnot => EscherianKnot(),
             _ => throw new System.Exception(),
         };
     }
-}
-
-class PointGenerators
-{
-    const ushort Radius = 10;
 
     public static Vector3 Sphere()
     {
@@ -303,17 +317,4 @@ class PointGenerators
             r * Mathf.Sin(φ) * Mathf.Sin(2 * θ)
         );
     }
-}
-
-public enum Shapes
-{
-    Sphere,
-    Ring,
-    Pie,
-    TwoRing,
-    Cage,
-    TwoCube,
-    TwoSphere,
-    Tetrahedron,
-    EscherianKnot,
 }
