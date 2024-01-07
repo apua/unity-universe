@@ -12,9 +12,8 @@ public class Universe : MonoBehaviour
     public ushort Amount;
     public Shapes.Name Shape;
 
-
-    Shapes.Name _currentShape, _transformShape;
     float _transformDeltaTime = 0;
+    Shapes.Name _currentShape, _transformShape;
     List<Vector3> _transformVelocities = new();
 
     void Start()
@@ -79,19 +78,20 @@ public class Universe : MonoBehaviour
 
     void TransformShape()
     {
-        if (_currentShape == Shape)
-            return;
-
         if (_transformShape != Shape)
         {   // Start or restart a transformation.
-            _transformShape = Shape;
+            // Reinitialize delta time, shape, and velocities.
             _transformDeltaTime = 1.25f;
+            _transformShape = Shape;
+            _transformVelocities.Clear();
             _transformVelocities.AddRange(Enumerable.Range(0, stars.transform.childCount).Select(index =>
                 (Shapes.GeneratePoint(_transformShape) - stars.transform.GetChild(index).localPosition) / _transformDeltaTime
             ));
         }
-        else
+        else if (_currentShape != _transformShape)
         {   // `childCount` changes during a transformation.
+            // Adjust velocities to align the count of children.
+            // Not change delta time.
             var addition = stars.transform.childCount - _transformVelocities.Count;
             if (addition > 0)
             {
@@ -110,22 +110,26 @@ public class Universe : MonoBehaviour
             else
             {}
         }
+        else
+        {}
 
-        if (_transformDeltaTime > Time.deltaTime)
-        {
+        if (_transformDeltaTime == 0)
+        {   // No transformation
+        }
+        else if (_transformDeltaTime > Time.deltaTime)
+        {   // A step of transformation.
             for (int i = 0; i < stars.transform.childCount; i++)
                 stars.transform.GetChild(i).localPosition += _transformVelocities[i] * Time.deltaTime;
 
             _transformDeltaTime -= Time.deltaTime;
         }
         else
-        {
+        {   // The last step of transformation.
             for (int i = 0; i < stars.transform.childCount; i++)
                 stars.transform.GetChild(i).localPosition += _transformVelocities[i] * _transformDeltaTime;
 
-            _currentShape = _transformShape = Shape;
             _transformDeltaTime = 0f;
-            _transformVelocities.Clear();
+            _currentShape = _transformShape;
         }
     }
 
